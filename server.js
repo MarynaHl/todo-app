@@ -28,4 +28,30 @@ function App() {
     // Функція для видалення завдання
     const deleteTodo = (id) => {
         axios.delete(`http://localhost:5000/todos/${id}`) // Відправляємо DELETE запит до сервера з id завдання
-            .then(() => setTodos(todos.filter(todo => todo.id !== id
+            .then(() => setTodos(todos.filter(todo => todo.id !== id))) // Видаляємо завдання зі стану завдань
+            .catch(error => console.error(error)); // Логування помилки в разі невдачі запиту
+    };
+
+    return (
+        <div className="App">
+            <h1>Todo List</h1> {/* Заголовок додатку */}
+            <input
+                type="text"
+                value={newTodo} // Значення поля введення прив'язане до стану newTodo
+                onChange={(e) => setNewTodo(e.target.value)} // Оновлюємо стан newTodo при зміні введеного тексту
+                placeholder="Enter new todo" // Підказка в полі введення
+            />
+            <button onClick={addTodo}>Add Todo</button> {/* Кнопка для додавання нового завдання */}
+            <ul>
+                {todos.map(todo => ( // Перебираємо всі завдання та відображаємо їх у списку
+                    <li key={todo.id}>
+                        {todo.text} {/* Текст завдання */}
+                        <button onClick={() => deleteTodo(todo.id)}>Delete</button> {/* Кнопка для видалення завдання */}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+
+export default App;
